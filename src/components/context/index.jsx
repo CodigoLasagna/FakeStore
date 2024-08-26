@@ -6,9 +6,17 @@ export const ShopiProvider = ({ children }) => {
 	
 	const [items, setItems] = useState([])
 	const [modalStatus, setModal] = useState(false)
+	const [selectedProduct, setSelectedProduct] = useState(null);
 
-	const openModal = () => setModal(true)
-	const closeModal = () => setModal(false)
+	const openModal = (product) => {
+		setSelectedProduct(product);
+		setModal(true);
+	};
+	
+	const closeModal = () => {
+		setModal(false);
+		setSelectedProduct(null);
+	};
 	
 	useEffect(() => {
 		fetch('https://fakestoreapi.com/products')
@@ -23,6 +31,7 @@ export const ShopiProvider = ({ children }) => {
 			modalStatus,
 			openModal,
 			closeModal,
+			selectedProduct,
 		}}>
 			{children}
 		</ShopiContext.Provider>
