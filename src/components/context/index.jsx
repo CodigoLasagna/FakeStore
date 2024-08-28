@@ -7,6 +7,7 @@ export const ShopiProvider = ({ children }) => {
 	const [modalStatus, setModal] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [cart, setCart] = useState([]);
+	const [orders, setOrder] = useState([]);
 	const [checkoutStatus, setCheckoutStatus] = useState(false); // Nuevo estado
 
 	const openModal = (product) => {
@@ -41,6 +42,23 @@ export const ShopiProvider = ({ children }) => {
 		});
 	};
 
+	const addToOrders = () => {
+		const orderDate = new Date().toISOString();
+		const totalPrice = cart.reduce((total, product) => total + product.price, 0);
+		const totalProducts = cart.length;
+	
+		const newOrder = {
+			date: orderDate,
+			products: [...cart],
+			totalPrice,
+			totalProducts
+		};
+	
+		setOrder((prevOrders) => [...prevOrders, newOrder]);
+		setCart([]);
+	};
+
+
 	useEffect(() => {
 		fetch('https://fakestoreapi.com/products')
 			.then(response => response.json())
@@ -58,9 +76,11 @@ export const ShopiProvider = ({ children }) => {
 			cart,
 			addToCart,
 			removeFromCart,
-			checkoutStatus, // Añadido al contexto
+			checkoutStatus,
 			openCheckout,
-			closeCheckout
+			closeCheckout,
+			orders,
+			addToOrders,
 		}}>
 			{children}
 		</ShopiContext.Provider>
