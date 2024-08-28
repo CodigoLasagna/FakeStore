@@ -49,7 +49,10 @@ export default function CheckoutList() {
 			{/* Contenedor para el precio total y el botón de finalizar compra */}
 			<div className="p-6 border-t border-black">
 				<h3 className="font-bold text-lg">Total: ${context.cart.reduce((total, product) => total + product.price, 0).toFixed(2)}</h3>
-				<button className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
+				<button
+					className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+					onClick={() => context.addToOrders()}
+					>
 					Finalizar Compra
 				</button>
 			</div>
