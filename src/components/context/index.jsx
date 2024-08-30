@@ -8,7 +8,14 @@ export const ShopiProvider = ({ children }) => {
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [cart, setCart] = useState([]);
 	const [orders, setOrder] = useState([]);
-	const [checkoutStatus, setCheckoutStatus] = useState(false); // Nuevo estado
+	const [checkoutStatus, setCheckoutStatus] = useState(false);
+	const [searchItem, setSearchItem] = useState('');
+	const [filteredItems, setFilteredItems] = useState([]);
+
+
+	const filteredItemsByTitle = (items, searchByTitle) => {
+		return items?.filter((item) => item.title.toLowerCase().includes(searchByTitle.toLowerCase()));
+	}
 
 	const openModal = (product) => {
 		setSelectedProduct(product);
@@ -66,6 +73,10 @@ export const ShopiProvider = ({ children }) => {
 			.catch(error => console.error('Error: ', error));
 	}, []);
 
+	useEffect(() => {
+		setFilteredItems(filteredItemsByTitle(items, searchItem));
+	}, [searchItem, items]);
+
 	return (
 		<ShopiContext.Provider value={{
 			items,
@@ -81,6 +92,8 @@ export const ShopiProvider = ({ children }) => {
 			closeCheckout,
 			orders,
 			addToOrders,
+			setSearchItem,
+			filteredItems
 		}}>
 			{children}
 		</ShopiContext.Provider>
