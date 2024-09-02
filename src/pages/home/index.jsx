@@ -4,8 +4,8 @@ import { ShopiContext } from '../../components/context';
 import ProductDetail from '../../components/utilities/ProductDetail';
 import CheckoutList from '../../components/utilities/CheckoutCart';
 
-export default function App() {
-	const context = useContext(ShopiContext)
+export default function Home() {
+	const context = useContext(ShopiContext);
 
 	return (
 		<>

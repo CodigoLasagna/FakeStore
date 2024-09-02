@@ -11,6 +11,7 @@ export const ShopiProvider = ({ children }) => {
 	const [checkoutStatus, setCheckoutStatus] = useState(false);
 	const [searchItem, setSearchItem] = useState('');
 	const [filteredItems, setFilteredItems] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState('all');
 
 
 	const filteredItemsByTitle = (items, searchByTitle) => {
@@ -65,6 +66,13 @@ export const ShopiProvider = ({ children }) => {
 		setCart([]);
 	};
 
+	const filterItemsByCategory = (category) => {
+		if (category === 'all') {
+			return items;
+		}
+		return items?.filter(item => item.category.toLowerCase().includes(category.toLowerCase()));
+	};
+
 
 	useEffect(() => {
 		fetch('https://fakestoreapi.com/products')
@@ -74,8 +82,10 @@ export const ShopiProvider = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		setFilteredItems(filteredItemsByTitle(items, searchItem));
-	}, [searchItem, items]);
+		let filtered = filterItemsByCategory(selectedCategory);
+		setFilteredItems(filteredItemsByTitle(filtered, searchItem));
+		console.log(filtered)
+	}, [searchItem, selectedCategory, items]);
 
 	return (
 		<ShopiContext.Provider value={{
@@ -93,7 +103,8 @@ export const ShopiProvider = ({ children }) => {
 			orders,
 			addToOrders,
 			setSearchItem,
-			filteredItems
+			filteredItems,
+			setSelectedCategory
 		}}>
 			{children}
 		</ShopiContext.Provider>
